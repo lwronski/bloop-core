@@ -23,8 +23,13 @@ object Defaults {
   }
 
   private lazy val (bloopCacheDir, bloopDataDir) = {
-    import bloop.bloopgun.internal.ProjDirHelper
-    (Paths.get(ProjDirHelper.cacheDir()), Paths.get(ProjDirHelper.dataDir()))
+    Option(System.getenv("BLOOP_HOME")) match {
+      case Some(bloopHome) =>
+        (Paths.get(bloopHome, "cache"), Paths.get(bloopHome, "data"))
+      case None =>
+        import bloop.bloopgun.internal.ProjDirHelper
+        (Paths.get(ProjDirHelper.cacheDir()), Paths.get(ProjDirHelper.dataDir()))
+    }
   }
 
   lazy val daemonDir: Path = {

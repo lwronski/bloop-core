@@ -23,12 +23,16 @@ object Paths {
   private def createDirFor(filepath: String): AbsolutePath =
     AbsolutePath(Files.createDirectories(NioPaths.get(filepath)))
 
-  private lazy val bloopCacheDir: AbsolutePath = createDirFor(
-    bloop.io.internal.ProjDirHelper.cacheDir()
-  )
-  private lazy val bloopDataDir: AbsolutePath = createDirFor(
-    bloop.io.internal.ProjDirHelper.dataDir()
-  )
+  private val (cacheDir, dataDir) =
+    Option(System.getenv("BLOOP_HOME")) match {
+      case Some(bloopHome) =>
+        (NioPaths.get(bloopHome, "cache").toString, NioPaths.get(bloopHome, "data").toString)
+      case None =>
+        (bloop.io.internal.ProjDirHelper.cacheDir(), bloop.io.internal.ProjDirHelper.dataDir())
+    }
+
+  private lazy val bloopCacheDir: AbsolutePath = createDirFor(cacheDir)
+  private lazy val bloopDataDir: AbsolutePath = createDirFor(dataDir)
 
   lazy val daemonDir: AbsolutePath = {
     def defaultDir = {
