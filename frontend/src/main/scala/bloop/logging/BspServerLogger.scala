@@ -98,7 +98,7 @@ final class BspServerLogger private (
 
   def diagnostic(event: CompilationEvent.Diagnostic): Unit = {
     import sbt.util.InterfaceUtil.toOption
-    val message = event.problem.message
+    val message = event.problem.rendered.orElse(event.problem.message)
     val problemPos = event.problem.position
     val problemSeverity = event.problem.severity
     val sourceFile = toOption(problemPos.sourceFile())
