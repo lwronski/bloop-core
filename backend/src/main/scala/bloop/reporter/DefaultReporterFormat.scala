@@ -54,7 +54,7 @@ class DefaultReporterFormat(reporter: Reporter) extends ReporterFormat(reporter)
   }
 
   protected def formatMessage(problem: Problem): Option[String] =
-    Some(problem.message)
+    Some(problem.rendered.orElse(problem.message))
 
   override def formatProblem(problem: Problem): String = {
     val line = toOption(problem.position.line).map("L" + _).getOrElse("")

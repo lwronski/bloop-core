@@ -22,7 +22,7 @@ object ScalacFormat extends (Reporter => ReporterFormat) {
 class ScalacFormat(reporter: Reporter) extends ReporterFormat(reporter) {
 
   override def formatProblem(problem: Problem): String =
-    format(problem.position, problem.message)
+    format(problem.position, problem.rendered.orElse(problem.message))
 
   override def printSummary(): Unit = {
     val warnings = reporter.allProblems.count(_.severity == Severity.Warn)
