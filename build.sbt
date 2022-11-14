@@ -88,6 +88,8 @@ lazy val backend = project
     buildInfoObject := "BloopScalaInfo",
     libraryDependencies ++= List(
       Dependencies.javaDebug,
+      Dependencies.jsoniterCore,
+      Dependencies.jsoniterMacros % Provided,
       Dependencies.nailgun,
       Dependencies.scalazCore,
       Dependencies.scalazConcurrent,
